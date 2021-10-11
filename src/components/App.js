@@ -1,45 +1,113 @@
 import React, { Component } from 'react';
-import logo from '../logo.png';
 import './App.css';
+import Navbar from './Navbar'
+import Main from './Main'
+import Web3 from 'web3'
+import Marketplace from '../abis/Marketplace.json'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      account: '',
+      productCount: 0,
+      products: [],
+      loading: true
+    }
+    this.createProduct = this.createProduct.bind(this)
+    this.removeProduct = this.removeProduct.bind(this)
+    this.purchaseProduct = this.purchaseProduct.bind(this)
+  }
+
+  async componentWillMount() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    } else {
+      window.alert('Non-Ethereum browser detected. Consider trying MetaMask.')
+      return
+    }
+    const accounts = await window.web3.eth.getAccounts()
+    this.setState({ account: accounts[0] })
+    const networkId = await window.web3.eth.net.getId()
+    await this.loadMarketplace(networkId)
+    window.ethereum.on('accountsChanged', (newAccounts) => this.setState({ account: window.web3.utils.toChecksumAddress(newAccounts[0]) }))
+    window.ethereum.on('chainChanged', (newNetworkId) => this.loadMarketplace(parseInt(newNetworkId, 16)))
+    setInterval(async () => await this.loadBlockchainData(), 10000)
+  }
+
+  async loadMarketplace(networkId) {
+    networkId = networkId === 1337 ? 5777 : networkId
+    const networkData = Marketplace.networks[networkId]
+    if (networkData) {
+      const marketplace = new window.web3.eth.Contract(Marketplace.abi, networkData.address)
+      this.setState({ marketplace })
+      await this.loadBlockchainData()
+      this.setState({ loading: false })
+    } else {
+      window.alert('Marketplace contract not deployed to detected network.')
+    }
+  }
+
+  async loadBlockchainData() {
+    const productCount = await this.state.marketplace.methods.productCount().call()
+    this.setState({ productCount })
+    const products = []
+    for (var i = 1; i <= productCount; i++) {
+      const product = await this.state.marketplace.methods.products(i).call()
+      products.push(product)
+    }
+    this.setState({ products })
+  }
+
+  createProduct(name, price) {
+    this.setState({ loading: true })
+    this.state.marketplace.methods.createProduct(name, price).send({ from: this.state.account })
+      .once('receipt', (receipt) => {
+        this.loadBlockchainData()
+        this.setState({ loading: false })
+      })
+      .on('error', (error) => this.setState({ loading: false }))
+  }
+
+  removeProduct(id) {
+    this.setState({ loading: true })
+    this.state.marketplace.methods.removeProduct(id).send({ from: this.state.account })
+      .once('receipt', (receipt) => {
+        this.loadBlockchainData()
+        this.setState({ loading: false })
+      })
+      .on('error', (error) => this.setState({ loading: false }))
+  }
+
+  purchaseProduct(id, price) {
+    this.setState({ loading: true })
+    this.state.marketplace.methods.purchaseProduct(id).send({ from: this.state.account, value: price })
+      .once('receipt', (receipt) => {
+        this.loadBlockchainData()
+        this.setState({ loading: false })
+      })
+      .on('error', (error) => this.setState({ loading: false }))
+  }
+
   render() {
     return (
       <div>
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-          <a
-            className="navbar-brand col-sm-3 col-md-2 mr-0"
-            href="http://www.dappuniversity.com/bootcamp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Dapp University
-          </a>
-        </nav>
+        <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
-              </div>
+            <main role="main" className="col-lg-12 d-flex">
+              {this.state.loading
+                ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
+                : <Main
+                  account={this.state.account}
+                  products={this.state.products}
+                  createProduct={this.createProduct}
+                  removeProduct={this.removeProduct}
+                  purchaseProduct={this.purchaseProduct} />
+              }
             </main>
           </div>
         </div>
