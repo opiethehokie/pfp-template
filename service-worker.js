@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/smart-marketplace/precache-manifest.046895e3e47068d44fd93f968000684f.js"
+  "/smart-marketplace/precache-manifest.6cf14742e72d91f0905da6ec14a4c399.js"
 );
 
 workbox.clientsClaim();

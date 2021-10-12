@@ -1,15 +1,15 @@
 {
   "main.css": "/smart-marketplace/static/css/main.58803189.chunk.css",
-  "main.js": "/smart-marketplace/static/js/main.887b6aae.chunk.js",
-  "main.js.map": "/smart-marketplace/static/js/main.887b6aae.chunk.js.map",
+  "main.js": "/smart-marketplace/static/js/main.e2e967a6.chunk.js",
+  "main.js.map": "/smart-marketplace/static/js/main.e2e967a6.chunk.js.map",
   "static/css/1.fe8d0f38.chunk.css": "/smart-marketplace/static/css/1.fe8d0f38.chunk.css",
   "static/js/1.a01fa0f9.chunk.js": "/smart-marketplace/static/js/1.a01fa0f9.chunk.js",
   "static/js/1.a01fa0f9.chunk.js.map": "/smart-marketplace/static/js/1.a01fa0f9.chunk.js.map",
   "runtime~main.js": "/smart-marketplace/static/js/runtime~main.7659d650.js",
   "runtime~main.js.map": "/smart-marketplace/static/js/runtime~main.7659d650.js.map",
-  "static/css/main.58803189.chunk.css.map": "/smart-marketplace/static/css/main.58803189.chunk.css.map",
   "static/css/1.fe8d0f38.chunk.css.map": "/smart-marketplace/static/css/1.fe8d0f38.chunk.css.map",
+  "static/css/main.58803189.chunk.css.map": "/smart-marketplace/static/css/main.58803189.chunk.css.map",
   "index.html": "/smart-marketplace/index.html",
-  "precache-manifest.046895e3e47068d44fd93f968000684f.js": "/smart-marketplace/precache-manifest.046895e3e47068d44fd93f968000684f.js",
+  "precache-manifest.6cf14742e72d91f0905da6ec14a4c399.js": "/smart-marketplace/precache-manifest.6cf14742e72d91f0905da6ec14a4c399.js",
   "service-worker.js": "/smart-marketplace/service-worker.js"
 }

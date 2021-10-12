@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "887b6aae42b1d3eba8fa",
+    "revision": "e2e967a628bad4c73f48",
     "url": "/smart-marketplace/static/css/main.58803189.chunk.css"
   },
   {
-    "revision": "887b6aae42b1d3eba8fa",
-    "url": "/smart-marketplace/static/js/main.887b6aae.chunk.js"
+    "revision": "e2e967a628bad4c73f48",
+    "url": "/smart-marketplace/static/js/main.e2e967a6.chunk.js"
   },
   {
     "revision": "a01fa0f908dd904f9a88",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/smart-marketplace/static/js/runtime~main.7659d650.js"
   },
   {
-    "revision": "e02a58e0978b0df6bd7aba84eae5ae9d",
+    "revision": "bfe93e32793a5ba461fc3e4b16439b25",
     "url": "/smart-marketplace/index.html"
   }
 ];
