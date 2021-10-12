@@ -2,7 +2,7 @@
   "name": "eth-marketplace",
   "version": "0.1.0",
   "description": "An Ethereum Marketplace",
-  "author": "gregory@dappuniversity.com",
+  "homepage": "https://opiethehokie.github.io/smart-marketplace",
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
@@ -14,6 +14,7 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "3.0.0",
+    "gh-pages": "^3.2.3",
     "react": "16.8.4",
     "react-bootstrap": "1.6.4",
     "react-dom": "16.8.4",
@@ -22,6 +23,8 @@
     "web3": "1.6.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
