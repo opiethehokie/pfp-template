@@ -11,7 +11,7 @@ module.exports = {
       network_id: "*" // Match any network id
     },
     rinkeby: {
-      provider: () => new HDWalletProvider(['private key'], `https://rinkeby.infura.io/v3/d458c7d43d474c5b85c10d15172026b9`),
+      provider: () => new HDWalletProvider(['deployer private key'], `https://rinkeby.infura.io/v3/d458c7d43d474c5b85c10d15172026b9`),
       network_id: 4
     }
   },
