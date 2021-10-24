@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-import './App.css';
-import Navbar from './Navbar'
-import Main from './Main'
 import Web3 from 'web3'
-import Marketplace from '../abis/Marketplace.json'
+import './App.css';
+import MyCollectible from '../abis/MyCollectible.json'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       account: '',
-      productCount: 0,
-      products: [],
-      loading: true
+      contract: null,
+      totalSupply: 0,
+      collectibles: []
     }
-    this.createProduct = this.createProduct.bind(this)
-    this.removeProduct = this.removeProduct.bind(this)
-    this.purchaseProduct = this.purchaseProduct.bind(this)
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum)
       await window.ethereum.request({ method: 'eth_requestAccounts' })
+      window.web3 = new Web3(window.ethereum)
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider)
     } else {
@@ -32,84 +27,96 @@ class App extends Component {
     const accounts = await window.web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
     const networkId = await window.web3.eth.net.getId()
-    await this.loadMarketplace(networkId)
+    await this.loadContract(networkId)
     window.ethereum.on('accountsChanged', (newAccounts) => this.setState({ account: window.web3.utils.toChecksumAddress(newAccounts[0]) }))
-    window.ethereum.on('chainChanged', (newNetworkId) => this.loadMarketplace(parseInt(newNetworkId, 16)))
+    window.ethereum.on('chainChanged', (newNetworkId) => this.loadContract(parseInt(newNetworkId, 16)))
     setInterval(async () => await this.loadBlockchainData(), 10000)
   }
 
-  async loadMarketplace(networkId) {
+  async loadContract(networkId) {
     networkId = networkId === 1337 ? 5777 : networkId
-    const networkData = Marketplace.networks[networkId]
+    const networkData = MyCollectible.networks[networkId]
     if (networkData) {
-      const marketplace = new window.web3.eth.Contract(Marketplace.abi, networkData.address)
-      this.setState({ marketplace })
+      const contract = new window.web3.eth.Contract(MyCollectible.abi, networkData.address)
+      this.setState({ contract })
       await this.loadBlockchainData()
-      this.setState({ loading: false })
     } else {
-      window.alert('Marketplace contract not deployed to detected network.')
+      window.alert('MyCollectible contract not deployed to detected network.')
     }
   }
 
   async loadBlockchainData() {
-    const productCount = await this.state.marketplace.methods.productCount().call()
-    this.setState({ productCount })
-    const products = []
-    for (var i = 1; i <= productCount; i++) {
-      const product = await this.state.marketplace.methods.products(i).call()
-      products.push(product)
+    const totalSupply = await this.state.contract.methods.totalSupply().call()
+    this.setState({ totalSupply })
+    const collectibles = []
+    for (var i = 0; i < totalSupply; i++) {
+      const collectible = await this.state.contract.methods.collectibles(i).call()
+      collectibles.push(collectible)
     }
-    this.setState({ products })
+    this.setState({ collectibles })
   }
 
-  createProduct(name, price) {
-    this.setState({ loading: true })
-    this.state.marketplace.methods.createProduct(name, price).send({ from: this.state.account })
+  mint = (collectible) => {
+    this.state.contract.methods.mint(collectible).send({ from: this.state.account })
       .once('receipt', (receipt) => {
-        this.loadBlockchainData()
-        this.setState({ loading: false })
+        this.setState({
+          collectibles: [...this.state.collectibles, collectible]
+        })
       })
-      .on('error', (error) => this.setState({ loading: false }))
-  }
-
-  removeProduct(id) {
-    this.setState({ loading: true })
-    this.state.marketplace.methods.removeProduct(id).send({ from: this.state.account })
-      .once('receipt', (receipt) => {
-        this.loadBlockchainData()
-        this.setState({ loading: false })
-      })
-      .on('error', (error) => this.setState({ loading: false }))
-  }
-
-  purchaseProduct(id, price) {
-    this.setState({ loading: true })
-    this.state.marketplace.methods.purchaseProduct(id).send({ from: this.state.account, value: price })
-      .once('receipt', (receipt) => {
-        this.loadBlockchainData()
-        this.setState({ loading: false })
-      })
-      .on('error', (error) => this.setState({ loading: false }))
   }
 
   render() {
     return (
       <div>
-        <Navbar account={this.state.account} />
+        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+          <ul className="navbar-nav px-3">
+            <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
+              <small className="text-white"><span id="title">my collectible</span></small>
+            </li>
+          </ul>
+          <ul className="navbar-nav px-3">
+            <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
+              <small className="text-white"><span id="account">{this.state.account}</span></small>
+            </li>
+          </ul>
+        </nav>
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex">
+            <main role="main" className="col-lg-12 d-flex text-center">
               {this.state.loading
                 ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
-                : <Main
-                  account={this.state.account}
-                  products={this.state.products}
-                  createProduct={this.createProduct}
-                  removeProduct={this.removeProduct}
-                  purchaseProduct={this.purchaseProduct} />
+                : <div className="content">
+                  <form className="input-group" onSubmit={(event) => {
+                    event.preventDefault()
+                    const collectible = this.collectibleEntered.value
+                    this.mint(collectible)
+                  }}>
+                    <input
+                      type='text'
+                      className='form-control'
+                      placeholder='e.g. #FFFFFF'
+                      ref={(input) => { this.collectibleEntered = input }}
+                    />
+                    <div className="input-group-append">
+                      <button type='submit' className='btn btn-block btn-primary'>MINT</button>
+                    </div>
+                  </form>
+                </div>
               }
             </main>
           </div>
+          <hr />
+          <div className="row text-center">
+            {this.state.collectibles.map((collectible, key) => {
+              return (
+                <div key={key} className="col-md-3 mb-3">
+                  <div className="token" style={{ backgroundColor: collectible }}></div>
+                  <div>{collectible}</div>
+                </div>
+              )
+            })}
+          </div>
+          <hr />
         </div>
       </div>
     );

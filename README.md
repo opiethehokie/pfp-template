@@ -1,6 +1,6 @@
 # smart-marketplace
 
-Customization of https://github.com/dappuniversity/marketplace which is used in the https://www.dappuniversity.com/articles/how-to-build-a-blockchain-app tutorial.
+Customization of https://github.com/dappuniversity/marketplace and https://github.com/dappuniversity/nft which are used in https://www.dappuniversity.com/ tutorials.
 
 Prereqs:
 
@@ -11,9 +11,9 @@ Prereqs:
 Setup:
 * clone this repo and run `npm install`
 * add Ganache to wallet networks
-* import frist three Ganache addresses to wallet for testing (deployer, seller and buyer)
+* import first Ganache addresses to wallet for testing
 * https://infura.io/ account and project
-* get fake ETH for the three users on Rinkeby test network
+* get fake ETH for the test user on the Rinkeby test network
 
 Development:
 * compile smart contracts: `npx truffle compile`
