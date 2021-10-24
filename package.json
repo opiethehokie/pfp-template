@@ -12,18 +12,22 @@
     "babel-preset-stage-3": "^6.24.1",
     "babel-register": "^6.26.0",
     "bootstrap": "^4.6.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "chai-bignumber": "^3.0.0",
-    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
+    "web3": "^1.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "gh-pages": "^3.2.3",
+    "nft-art-generator": "^1.0.3",
+    "rarepress": "^0.1.7",
+    "sqlite3": "^5.0.2",
     "truffle": "^5.4.16",
     "truffle-hdwallet-provider": "^1.0.17",
-    "truffle-hdwallet-provider-privkey": "^0.3.0",
-    "web3": "^1.6.0"
+    "truffle-hdwallet-provider-privkey": "^0.3.0"
   },
   "scripts": {
     "predeploy": "npm run build",

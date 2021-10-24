@@ -28,10 +28,10 @@ contract MyCollectible is ERC721, ERC721Enumerable {
         return super.supportsInterface(interfaceId);
     }
 
-    //TODO needs minter role not public
     //TODO metadata
+    //TODO checks around max, public, see https://github.com/steve-ng/pokerface-nft/blob/main/contracts/PokerFaces.sol
     function mint(string memory _collectible) public {
-        require(!_collectibleExists[_collectible]);
+        require(!_collectibleExists[_collectible], 'Duplicate');
         collectibles.push(_collectible);
         uint256 _uid = collectibles.length;
         _mint(msg.sender, _uid);
