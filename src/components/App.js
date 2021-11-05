@@ -112,7 +112,7 @@ class App extends Component {
             })}
           </div>
           <hr />
-          <div><a href="http://localhost:3000/smart-marketplace">contract</a></div>
+          <div><a href="https://rinkeby.etherscan.io/address/0x40fBca158d4Cd28e5ba75b0a15045Aa473Aba334#code" target="_blank">contract</a></div>
           <div>provenance hash: {this.state.provenanceHash}</div>
         </div>
       </div>

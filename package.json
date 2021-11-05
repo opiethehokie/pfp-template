@@ -25,10 +25,10 @@
     "gh-pages": "^3.2.3",
     "nft-art-generator": "^1.0.3",
     "@pinata/sdk": "^1.1.23",
-    "truffle": "^5.4.16",
+    "truffle": "^5.4.18",
     "truffle-hdwallet-provider": "^1.0.17",
     "truffle-hdwallet-provider-privkey": "^0.3.0",
-    "truffle-plugin-verify": "^0.5.16"
+    "truffle-plugin-verify": "^0.5.17"
   },
   "scripts": {
     "predeploy": "npm run build",
