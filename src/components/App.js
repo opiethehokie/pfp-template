@@ -9,7 +9,10 @@ class App extends Component {
     this.state = {
       account: '',
       contract: null,
-      totalSupply: 0,
+      price: 0,
+      mintedSoFar: 0,
+      totalCollectibles: 0,
+      provenanceHash: '',
       collectibles: []
     }
   }
@@ -46,22 +49,23 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const totalSupply = await this.state.contract.methods.totalSupply().call()
-    this.setState({ totalSupply })
-    const collectibles = []
-    for (var i = 0; i < totalSupply; i++) {
-      const collectible = await this.state.contract.methods.collectibles(i).call()
-      collectibles.push(collectible)
-    }
+    const mintedSoFar = await this.state.contract.methods.totalSupply().call()
+    this.setState({ mintedSoFar })
+    const totalCollectibles = await this.state.contract.methods.MAX_COLLECTIBLES().call()
+    this.setState({ totalCollectibles })
+    const provenanceHash = await this.state.contract.methods.provenanceHash().call()
+    this.setState({ provenanceHash })
+    const price = await this.state.contract.methods.price(1).call()
+    this.setState({ price })
+    const collectibles = await this.state.contract.methods.walletOfOwner(this.state.account).call()
     this.setState({ collectibles })
   }
 
-  mint = (collectible) => {
-    this.state.contract.methods.mint(collectible).send({ from: this.state.account })
+  mint = () => {
+    this.state.contract.methods.mint(this.state.account, 1).send({ from: this.state.account, value: this.state.price })
       .once('receipt', (receipt) => {
-        this.setState({
-          collectibles: [...this.state.collectibles, collectible]
-        })
+        console.log(receipt)
+        this.setState({ mintedSoFar: this.state.mintedSoFar + 1 })
       })
   }
 
@@ -71,7 +75,7 @@ class App extends Component {
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <small className="text-white"><span id="title">my collectible</span></small>
+              <small className="text-white"><span id="title">stupid squares</span></small>
             </li>
           </ul>
           <ul className="navbar-nav px-3">
@@ -88,19 +92,11 @@ class App extends Component {
                 : <div className="content">
                   <form className="input-group" onSubmit={(event) => {
                     event.preventDefault()
-                    const collectible = this.collectibleEntered.value
-                    this.mint(collectible)
+                    this.mint()
                   }}>
-                    <input
-                      type='text'
-                      className='form-control'
-                      placeholder='e.g. #FFFFFF'
-                      ref={(input) => { this.collectibleEntered = input }}
-                    />
-                    <div className="input-group-append">
-                      <button type='submit' className='btn btn-block btn-primary'>MINT</button>
-                    </div>
+                    <button type='submit' className='btn btn-block btn-primary'>MINT {this.state.price / 10**18} ETH</button>
                   </form>
+                  <span>{this.state.mintedSoFar}/{this.state.totalCollectibles}</span>
                 </div>
               }
             </main>
@@ -110,13 +106,14 @@ class App extends Component {
             {this.state.collectibles.map((collectible, key) => {
               return (
                 <div key={key} className="col-md-3 mb-3">
-                  <div className="token" style={{ backgroundColor: collectible }}></div>
                   <div>{collectible}</div>
                 </div>
               )
             })}
           </div>
           <hr />
+          <div><a href="http://localhost:3000/smart-marketplace">contract</a></div>
+          <div>provenance hash: {this.state.provenanceHash}</div>
         </div>
       </div>
     );

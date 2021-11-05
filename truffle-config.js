@@ -1,5 +1,6 @@
 require('babel-register');
 require('babel-polyfill');
+require('dotenv').config()
 
 const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
 
@@ -11,7 +12,7 @@ module.exports = {
       network_id: "*" // Match any network id
     },
     rinkeby: {
-      provider: () => new HDWalletProvider([process.env.RINKEBY_PRIVATE_KEY], `https://rinkeby.infura.io/v3/d458c7d43d474c5b85c10d15172026b9`),
+      provider: () => new HDWalletProvider([process.env.INFURA_PROJECT_SECRET], `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`),
       network_id: 4
     }
   },
@@ -25,5 +26,9 @@ module.exports = {
         runs: 200
       }
     }
+  },
+  plugins: ['truffle-plugin-verify'],
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_API_KEY
   }
 }

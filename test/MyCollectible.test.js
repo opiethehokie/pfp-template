@@ -27,36 +27,87 @@ contract('MyCollectible', (accounts) => {
 
     it('has a symbol', async () => {
       const name = await contract.symbol()
-      assert.equal(name, 'MYCOLLECTIBLE')
+      assert.equal(name, 'PFP')
+    })
+
+    it('has a URI', async () => {
+      const tokenURI = await contract.baseTokenURI()
+      assert.equal(tokenURI, 'testuri')
+    })
+
+    it('has a provenance hash', async () => {
+      const name = await contract.provenanceHash()
+      assert.equal(name, 'testhash')
+    })
+  })
+
+  describe('permissions', async () => {
+    it('only owner can pause', async () => {
+      await contract.pause(true, { from: accounts[2] }).should.be.rejectedWith('caller is not the owner')
+      await contract.pause(false, { from: accounts[2] }).should.be.rejectedWith('caller is not the owner')
+    })
+
+    it('only owner can withdraw a balance', async () => {
+      await contract.withdrawAll({ from: accounts[2] }).should.be.rejectedWith('caller is not the owner')
+      await contract.withdrawAll().should.be.rejectedWith('No balance')
     })
   })
 
   describe('minting', async () => {
-    it('creates a new token', async () => {
-      const result = await contract.mint('#EC058E')
-      const totalSupply = await contract.totalSupply()
-      assert.equal(totalSupply, 1)
+    it('only while sale is open', async () => {
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('token transfer while paused')
+    })
+
+    it('only one at a time', async () => {
+      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Exceeds number')
+    })
+
+    it('does not mint below price', async () => {
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('Value below price')
+    })
+
+    it('creates new tokens up to limits', async () => {
+      await contract.pause(false)
+      const result = await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      assert.equal(await contract.totalMint(), 1)
       const event = result.logs[0].args
-      assert.equal(event.tokenId.toNumber(), 1)
+      assert.equal(event.tokenId.toNumber(), 0)
       assert.equal(event.from, '0x0000000000000000000000000000000000000000')
-      assert.equal(event.to, accounts[0])
-      await contract.mint('#EC058E').should.be.rejected
+      assert.equal(event.to, accounts[1])
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Max limit')
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Sale end')
+      const totalMint = await contract.totalMint()
+      assert.equal(totalMint, 7)
     })
   })
 
-  describe('indexing', async () => {
-    it('lists collectibles', async () => {
-      await contract.mint('#5386E4')
-      await contract.mint('#FFFFFF')
-      await contract.mint('#000000')
-      const totalSupply = await contract.totalSupply()
-      const result = []
-      for (var i = 0; i < totalSupply; i++) {
-        const collectible = await contract.collectibles(i)
-        result.push(collectible)
-      }
-      assert.equal(result.join(','), ['#EC058E', '#5386E4', '#FFFFFF', '#000000'].join(','))
+  describe('withdraw', async () => {
+    it('sends full balance', async () => {
+      const oldOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
+      const totalMint = await contract.totalMint()
+      const value = await contract.price(totalMint)
+      const gas = new web3.utils.BN(5.9494 * 10**14)
+      await contract.withdrawAll()
+      const newOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
+      const expectedBalance = oldOwnerBalance.add(value).sub(gas)
+      assert.equal(newOwnerBalance.toString(), expectedBalance.toString())
+      assert.isTrue(newOwnerBalance.toString() > oldOwnerBalance.toString())
     })
   })
 
+  describe('token ownership', async () => {
+    it('knows what token ids belong to a wallet', async () => {
+      const collectibles = await contract.walletOfOwner(accounts[1])
+      assert.equal(collectibles.length, 7)
+      collectibles.forEach((collectible, i) => {
+        assert.equal(collectible.toString(), i)
+      })
+    });
+  });
 })
