@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/App.css"],"names":[],"mappings":"AAEA,OACE,YAAa,CACb,WAAY,CACZ,iBAAkB,CAClB,oBACF","file":"main.0aa7d243.chunk.css","sourcesContent":["/* Styles go here */\r\n\r\n.token {\r\n  height: 150px;\r\n  width: 150px;\r\n  border-radius: 50%;\r\n  display: inline-block;\r\n}\r\n"]}
