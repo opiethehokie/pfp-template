@@ -57,7 +57,12 @@ class App extends Component {
     this.setState({ provenanceHash })
     const price = await this.state.contract.methods.price(1).call()
     this.setState({ price })
-    const collectibles = await this.state.contract.methods.walletOfOwner(this.state.account).call()
+    const tokenIds = await this.state.contract.methods.walletOfOwner(this.state.account).call()
+    const collectibles = await Promise.all(tokenIds.map(async tokenId => {
+      const response = await fetch(`https://ipfs.io/ipfs/QmaFqMdDwTmHxYGRDv5X35wekimj1dKTgpme1rbbQoqbqh/${tokenId}`)
+      const metadata = await response.json()
+      return metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')
+    }))
     this.setState({ collectibles })
   }
 
@@ -75,7 +80,7 @@ class App extends Component {
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <small className="text-white"><span id="title">stupid squares</span></small>
+              <small className="text-white"><span id="title">My Collectible</span></small>
             </li>
           </ul>
           <ul className="navbar-nav px-3">
@@ -94,7 +99,7 @@ class App extends Component {
                     event.preventDefault()
                     this.mint()
                   }}>
-                    <button type='submit' className='btn btn-block btn-primary'>MINT {this.state.price / 10**18} ETH</button>
+                    <button type="submit" className="btn btn-block btn-primary">MINT {this.state.price / 10 ** 18} ETH</button>
                   </form>
                   <span>{this.state.mintedSoFar}/{this.state.totalCollectibles}</span>
                 </div>
@@ -103,16 +108,18 @@ class App extends Component {
           </div>
           <hr />
           <div className="row text-center">
-            {this.state.collectibles.map((collectible, key) => {
+            {this.state.collectibles.map((collectible, i) => {
               return (
-                <div key={key} className="col-md-3 mb-3">
-                  <div>{collectible}</div>
+                <div key={i} className="col-md-3 mb-3">
+                  <a href={`https://testnets.opensea.io/assets/${this.state.contract?.options.address}/${i}`} target="_blank" rel="noreferrer">
+                    <img className="w-50 p-3" src={collectible} alt="" />
+                  </a>
                 </div>
               )
             })}
           </div>
           <hr />
-          <div><a href="https://rinkeby.etherscan.io/address/0x40fBca158d4Cd28e5ba75b0a15045Aa473Aba334#code" target="_blank">contract</a></div>
+          <div><a href={`https://rinkeby.etherscan.io/address/${this.state.contract?.options.address}#code`} target="_blank" rel="noreferrer">contract</a></div>
           <div>provenance hash: {this.state.provenanceHash}</div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -18,7 +18,7 @@ contract MyCollectible is ERC721Enumerable, Ownable, ERC721Burnable, ERC721Pausa
 
     uint256 public constant MAX_COLLECTIBLES = 7;
     uint256 public constant MAX_BY_MINT = 1;
-    uint256 public constant PRICE = 1 * 10**16; // 1 ETH is 10**18 WEI
+    uint256 public constant PRICE = 1 * 10**15; // 1 ETH is 10**18 WEI
 
     string public baseTokenURI;
     string public provenanceHash;
