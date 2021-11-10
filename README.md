@@ -1,9 +1,8 @@
 # smart-marketplace
 
-Customization of https://github.com/dappuniversity/marketplace and https://github.com/dappuniversity/nft which are used in https://www.dappuniversity.com/ tutorials.
+Template for PFP NFTs. Demonstrates how to create PNGs from layers and store them on IPFS with the necessary metadata. Contains a smart contract for minting the NFTs and a web app for interacting with the contract. Example purposes only.
 
 Prereqs:
-
 * install http://truffleframework.com/ganache local blockchain
 * install https://nodejs.org/en/
 * browser with Ethereum wallet like Metamask
@@ -18,7 +17,7 @@ Misc Setup:
 * get fake ETH for the test user(s) on the Rinkeby test network
 * populate .env file
 
-Generate NFT art:
+Generate images:
 * create layers in `images` directory
 * combine layers into PNGs: `npx nft-generate`
 * `node ipfs.js` to store PNGs and associated metadata on IPFS plus generate the base URI and provenance hash needed when deploying the contract 
@@ -35,3 +34,8 @@ Webapp Development:
 * run locally: `npm run start`
 * unpause contract e.g. via `npx truffle console`
 * re-deploy to GitHub pages: update package.json homepage URL and `npm run deploy`
+
+Post-minting as contract owner:
+* edit collection on OpenSea (images, description, royalties, etc.)
+* claim ETH e.g. via `npx truffle console`
+* renounce ownership e.g. via `npx truffle console`

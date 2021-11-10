@@ -13,7 +13,9 @@ class App extends Component {
       mintedSoFar: 0,
       totalCollectibles: 0,
       provenanceHash: '',
-      collectibles: []
+      collectibles: [],
+      openseaDomain: '',
+      etherscanDomain: ''
     }
   }
 
@@ -42,6 +44,10 @@ class App extends Component {
     if (networkData) {
       const contract = new window.web3.eth.Contract(MyCollectible.abi, networkData.address)
       this.setState({ contract })
+      const openseaDomain = networkId === 1 ? 'opensea.io' : 'testnets.opensea.io'
+      this.setState({ openseaDomain })
+      const etherscanDomain = networkId === 1 ? 'etherscan.io' : 'rinkeby.etherscan.io'
+      this.setState({ etherscanDomain })
       await this.loadBlockchainData()
     } else {
       window.alert('MyCollectible contract not deployed to detected network.')
@@ -111,7 +117,7 @@ class App extends Component {
             {this.state.collectibles.map((collectible, i) => {
               return (
                 <div key={i} className="col-md-3 mb-3">
-                  <a href={`https://testnets.opensea.io/assets/${this.state.contract?.options.address}/${i}`} target="_blank" rel="noreferrer">
+                  <a href={`https://${this.state.openseaDomain}/assets/${this.state.contract?.options.address}/${i}`} target="_blank" rel="noreferrer">
                     <img className="w-50 p-3" src={collectible} alt="" />
                   </a>
                 </div>
@@ -119,7 +125,7 @@ class App extends Component {
             })}
           </div>
           <hr />
-          <div><a href={`https://rinkeby.etherscan.io/address/${this.state.contract?.options.address}#code`} target="_blank" rel="noreferrer">contract</a></div>
+          <div><a href={`https://${this.state.etherscanDomain}/address/${this.state.contract?.options.address}#code`} target="_blank" rel="noreferrer">contract</a></div>
           <div>provenance hash: {this.state.provenanceHash}</div>
         </div>
       </div>
