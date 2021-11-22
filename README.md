@@ -39,3 +39,7 @@ Post-minting as contract owner:
 * edit collection on OpenSea (images, description, royalties, etc.)
 * claim ETH e.g. via `npx truffle console`
 * renounce ownership e.g. via `npx truffle console`
+
+TODOs:
+* terms (like BAYC)
+* way to do air drop and combine with originals to create something new (like MAYC)
