@@ -21,7 +21,7 @@ Generate images:
 * create layers in `images` directory
 * combine layers into PNGs: `npx nft-generate`
 * `node ipfs.js` to store PNGs and associated metadata on IPFS plus generate the base URI and provenance hash needed when deploying the contract 
-* optional: submarine metadata  in the Pinata UI until some later date to prevent trait sniping
+* optional: submarine metadata in the Pinata UI until some later date to prevent trait sniping
 
 Contract Development:
 * compile: `npx truffle compile`
@@ -41,5 +41,5 @@ Post-minting as contract owner:
 * renounce ownership e.g. via `npx truffle console`
 
 TODOs:
-* terms (like BAYC)
-* way to do air drop and combine with originals to create something new (like MAYC)
+* terms (like BAYC) and/or FAQ (like Chain Runners)
+* general image to show in web app before reveal day
