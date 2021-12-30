@@ -1,6 +1,12 @@
-# smart-marketplace
+# pfp-template
 
-Template for PFP NFTs. Demonstrates how to create PNGs from layers and store them on IPFS with the necessary metadata. Contains a smart contract for minting the NFTs and a web app for interacting with the contract. Example purposes only.
+Template for profile picture (PFP) NFTs. Demonstrates how to create PNGs from layers and store them on IPFS with the necessary metadata. Contains a smart contract for minting the NFTs and a decentralized app (dApp) for interacting with the contract.
+
+Try it on the Rinkbey test network at https://opiethehokie.github.io/pfp-template.
+
+While not a complete tutorial, this could be a good place to start if you have done some reasearch and have lingering questions around how smart contracts work or how to interact with smart contracts from JavaScript. You could play with this as-is for a learning exercise, or customize it and do your own NFT launch.
+
+THIS REPO IS FOR EXAMPLE PURPOSES ONLY. DO YOUR OWN RESEARCH BEFORE USING.
 
 Prereqs:
 * install http://truffleframework.com/ganache local blockchain
@@ -40,6 +46,12 @@ Post-minting as contract owner:
 * claim ETH e.g. via `npx truffle console`
 * renounce ownership e.g. via `npx truffle console`
 
-TODOs:
+Future extensions/optimizations that would be nice:
 * terms (like BAYC) and/or FAQ (like Chain Runners)
-* general image to show in web app before reveal day
+* generic image to show in web app before reveal day
+* explore [alternate minting processes](https://medium.com/metatheoryinc/duskbreakers-a-play-to-mint-p2m-nft-project-edc8f34245c4) for fairness
+* remove ERC721Enumerable from contract because it uses a lot of gas
+* deploy contract to a different testnet like Polygon's Mumbai
+
+Other resources:
+* https://consensys.github.io/smart-contract-best-practices/

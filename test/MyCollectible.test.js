@@ -55,33 +55,33 @@ contract('MyCollectible', (accounts) => {
 
   describe('minting', async () => {
     it('only while sale is open', async () => {
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('token transfer while paused')
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('token transfer while paused')
     })
 
     it('only one at a time', async () => {
-      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Exceeds number')
+      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('Exceeds number')
     })
 
     it('does not mint below price', async () => {
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('Value below price')
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.0001', 'Ether') }).should.be.rejectedWith('Value below price')
     })
 
     it('creates new tokens up to limits', async () => {
       await contract.pause(false)
-      const result = await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
+      const result = await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
       assert.equal(await contract.totalMint(), 1)
       const event = result.logs[0].args
       assert.equal(event.tokenId.toNumber(), 0)
       assert.equal(event.from, '0x0000000000000000000000000000000000000000')
       assert.equal(event.to, accounts[1])
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Max limit')
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') })
-      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.01', 'Ether') }).should.be.rejectedWith('Sale end')
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 2, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('Max limit')
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') })
+      await contract.mint(accounts[1], 1, { value: web3.utils.toWei('.001', 'Ether') }).should.be.rejectedWith('Sale end')
       const totalMint = await contract.totalMint()
       assert.equal(totalMint, 7)
     })
@@ -92,7 +92,7 @@ contract('MyCollectible', (accounts) => {
       const oldOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
       const totalMint = await contract.totalMint()
       const value = await contract.price(totalMint)
-      const gas = new web3.utils.BN(5.9494 * 10**14)
+      const gas = new web3.utils.BN(5.9884 * 10**14)
       await contract.withdrawAll()
       const newOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
       const expectedBalance = oldOwnerBalance.add(value).sub(gas)

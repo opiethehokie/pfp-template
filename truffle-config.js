@@ -9,7 +9,7 @@ module.exports = {
     development: {
       host: "127.0.0.1",
       port: 7545,
-      network_id: "*" // Match any network id
+      network_id: "*"
     },
     rinkeby: {
       provider: () => new HDWalletProvider([process.env.DEPLOYER_PRIVATE_KEY], `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`),
@@ -23,7 +23,7 @@ module.exports = {
       version: "pragma",
       optimizer: {
         enabled: true,
-        runs: 200
+        runs: 10
       }
     }
   },

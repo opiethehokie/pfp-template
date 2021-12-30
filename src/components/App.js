@@ -35,7 +35,13 @@ class App extends Component {
     await this.loadContract(networkId)
     window.ethereum.on('accountsChanged', (newAccounts) => this.setState({ account: window.web3.utils.toChecksumAddress(newAccounts[0]) }))
     window.ethereum.on('chainChanged', (newNetworkId) => this.loadContract(parseInt(newNetworkId, 16)))
-    setInterval(async () => await this.loadBlockchainData(), 10000)
+    this.sub = this.state.contract.events.CreateMyCollectible({}).on('data', () => this.loadBlockchainData())
+  }
+
+  async componentWillUnmount() {
+    window.ethereum.removeListener('accountsChanged', this.state.account)
+    window.ethereum.removeListener('chainChanged', this.state.account)
+    this.sub.unsubscribe()
   }
 
   async loadContract(networkId) {

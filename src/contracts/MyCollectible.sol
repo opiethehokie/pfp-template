@@ -88,8 +88,8 @@ contract MyCollectible is ERC721Enumerable, Ownable, ERC721Burnable, ERC721Pausa
     function withdrawAll() public onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No balance");
-        address payable recipient = payable(address(msg.sender));
-        recipient.transfer(balance);
+        (bool success, ) = msg.sender.call{value: balance}("");
+        require(success, "Withdraw failed.");
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual override(ERC721, ERC721Enumerable, ERC721Pausable) {

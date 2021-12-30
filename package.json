@@ -1,8 +1,8 @@
 {
-  "name": "smart-marketplace",
+  "name": "pfp-template",
   "version": "0.1.0",
   "description": "An Ethereum Marketplace",
-  "homepage": "https://opiethehokie.github.io/smart-marketplace",
+  "homepage": "https://opiethehokie.github.io/pfp-template",
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.2",
     "babel-polyfill": "^6.26.0",
