@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/smart-marketplace/static/css/main.0aa7d243.chunk.css",
-    "main.js": "/smart-marketplace/static/js/main.6265fcb5.chunk.js",
-    "main.js.map": "/smart-marketplace/static/js/main.6265fcb5.chunk.js.map",
-    "runtime-main.js": "/smart-marketplace/static/js/runtime-main.bb969367.js",
-    "runtime-main.js.map": "/smart-marketplace/static/js/runtime-main.bb969367.js.map",
-    "static/css/2.73420eac.chunk.css": "/smart-marketplace/static/css/2.73420eac.chunk.css",
-    "static/js/2.f8a7e83b.chunk.js": "/smart-marketplace/static/js/2.f8a7e83b.chunk.js",
-    "static/js/2.f8a7e83b.chunk.js.map": "/smart-marketplace/static/js/2.f8a7e83b.chunk.js.map",
-    "index.html": "/smart-marketplace/index.html",
-    "static/css/2.73420eac.chunk.css.map": "/smart-marketplace/static/css/2.73420eac.chunk.css.map",
-    "static/css/main.0aa7d243.chunk.css.map": "/smart-marketplace/static/css/main.0aa7d243.chunk.css.map",
-    "static/js/2.f8a7e83b.chunk.js.LICENSE.txt": "/smart-marketplace/static/js/2.f8a7e83b.chunk.js.LICENSE.txt"
+    "main.css": "/pfp-template/static/css/main.0aa7d243.chunk.css",
+    "main.js": "/pfp-template/static/js/main.5261cad5.chunk.js",
+    "main.js.map": "/pfp-template/static/js/main.5261cad5.chunk.js.map",
+    "runtime-main.js": "/pfp-template/static/js/runtime-main.c4a4e6d5.js",
+    "runtime-main.js.map": "/pfp-template/static/js/runtime-main.c4a4e6d5.js.map",
+    "static/css/2.73420eac.chunk.css": "/pfp-template/static/css/2.73420eac.chunk.css",
+    "static/js/2.f740ab43.chunk.js": "/pfp-template/static/js/2.f740ab43.chunk.js",
+    "static/js/2.f740ab43.chunk.js.map": "/pfp-template/static/js/2.f740ab43.chunk.js.map",
+    "index.html": "/pfp-template/index.html",
+    "static/css/2.73420eac.chunk.css.map": "/pfp-template/static/css/2.73420eac.chunk.css.map",
+    "static/css/main.0aa7d243.chunk.css.map": "/pfp-template/static/css/main.0aa7d243.chunk.css.map",
+    "static/js/2.f740ab43.chunk.js.LICENSE.txt": "/pfp-template/static/js/2.f740ab43.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.bb969367.js",
+    "static/js/runtime-main.c4a4e6d5.js",
     "static/css/2.73420eac.chunk.css",
-    "static/js/2.f8a7e83b.chunk.js",
+    "static/js/2.f740ab43.chunk.js",
     "static/css/main.0aa7d243.chunk.css",
-    "static/js/main.6265fcb5.chunk.js"
+    "static/js/main.5261cad5.chunk.js"
   ]
 }
