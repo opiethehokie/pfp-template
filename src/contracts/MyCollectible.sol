@@ -40,56 +40,56 @@ contract MyCollectible is ERC721Enumerable, Ownable, ERC721Burnable, ERC721Pausa
         return _tokenIdTracker.current();
     }
 
-    function totalMint() public view returns (uint256) {
+    function totalMint() external view returns (uint256) {
         return _totalSupply();
     }
 
-    function mint(address _to, uint256 _count) public payable saleIsOpen {
-        require(_totalSupply() + _count <= MAX_COLLECTIBLES, "Max limit");
-        require(_count <= MAX_BY_MINT, "Exceeds number");
-        require(msg.value >= price(_count), "Value below price");
-        for (uint256 i = 0; i < _count; i++) {
-            _mintAnElement(_to);
+    function mint(address to, uint256 count) external payable saleIsOpen {
+        require(_totalSupply() + count <= MAX_COLLECTIBLES, "Max limit");
+        require(count <= MAX_BY_MINT, "Exceeds number");
+        require(msg.value >= price(count), "Value below price");
+        for (uint256 i = 0; i < count; i++) {
+            _mintAnElement(to);
         }
     }
 
-    function _mintAnElement(address _to) private {
+    function _mintAnElement(address to) private {
         uint256 id = _totalSupply();
         _tokenIdTracker.increment();
-        _safeMint(_to, id);
+        _safeMint(to, id);
         emit CreateMyCollectible(id);
     }
 
-    function price(uint256 _count) public pure returns (uint256) {
-        return PRICE.mul(_count);
+    function price(uint256 count) public pure returns (uint256) {
+        return PRICE.mul(count);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseTokenURI;
     }
 
-    function walletOfOwner(address _owner) external view returns (uint256[] memory) {
-        uint256 tokenCount = balanceOf(_owner);
+    function walletOfOwner(address walletOwner) external view returns (uint256[] memory) {
+        uint256 tokenCount = balanceOf(walletOwner);
         uint256[] memory tokensId = new uint256[](tokenCount);
         for (uint256 i = 0; i < tokenCount; i++) {
-            tokensId[i] = tokenOfOwnerByIndex(_owner, i);
+            tokensId[i] = tokenOfOwnerByIndex(walletOwner, i);
         }
         return tokensId;
     }
 
     function pause(bool val) public onlyOwner {
-        if (val == true) {
+        if (val) {
             _pause();
             return;
         }
         _unpause();
     }
 
-    function withdrawAll() public onlyOwner {
+    function withdrawAll() external onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No balance");
-        (bool success, ) = msg.sender.call{value: balance}("");
-        require(success, "Withdraw failed.");
+        address payable recipient = payable(address(msg.sender));
+        recipient.transfer(balance);
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual override(ERC721, ERC721Enumerable, ERC721Pausable) {

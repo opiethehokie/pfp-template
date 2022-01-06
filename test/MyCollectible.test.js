@@ -92,7 +92,7 @@ contract('MyCollectible', (accounts) => {
       const oldOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
       const totalMint = await contract.totalMint()
       const value = await contract.price(totalMint)
-      const gas = new web3.utils.BN(5.9884 * 10**14)
+      const gas = new web3.utils.BN(5.9494 * 10**14)
       await contract.withdrawAll()
       const newOwnerBalance = new web3.utils.BN(await web3.eth.getBalance(accounts[0]))
       const expectedBalance = oldOwnerBalance.add(value).sub(gas)

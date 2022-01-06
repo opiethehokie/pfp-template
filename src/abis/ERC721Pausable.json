@@ -380,7 +380,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.0;\n\nimport \"../ERC721.sol\";\nimport \"../../../security/Pausable.sol\";\n\n/**\n * @dev ERC721 token with pausable token transfers, minting and burning.\n *\n * Useful for scenarios such as preventing trades until the end of an evaluation\n * period, or having an emergency switch for freezing all token transfers in the\n * event of a large bug.\n */\nabstract contract ERC721Pausable is ERC721, Pausable {\n    /**\n     * @dev See {ERC721-_beforeTokenTransfer}.\n     *\n     * Requirements:\n     *\n     * - the contract must not be paused.\n     */\n    function _beforeTokenTransfer(\n        address from,\n        address to,\n        uint256 tokenId\n    ) internal virtual override {\n        super._beforeTokenTransfer(from, to, tokenId);\n\n        require(!paused(), \"ERC721Pausable: token transfer while paused\");\n    }\n}\n",
-  "sourcePath": "@openzeppelin\\contracts\\token\\ERC721\\extensions\\ERC721Pausable.sol",
+  "sourcePath": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol",
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol",
     "exportedSymbols": {
@@ -1343,7 +1343,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-30T19:16:29.710Z",
+  "updatedAt": "2022-01-06T03:21:37.475Z",
   "devdoc": {
     "details": "ERC721 token with pausable token transfers, minting and burning. Useful for scenarios such as preventing trades until the end of an evaluation period, or having an emergency switch for freezing all token transfers in the event of a large bug.",
     "kind": "dev",

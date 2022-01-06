@@ -46,7 +46,7 @@ Post-minting as contract owner:
 * claim ETH e.g. via `npx truffle console`
 * renounce ownership e.g. via `npx truffle console`
 
-Future extensions/optimizations that would be nice:
+Future extensions/optimizations:
 * terms (like BAYC) and/or FAQ (like Chain Runners)
 * generic image to show in web app before reveal day
 * explore [alternate minting processes](https://medium.com/metatheoryinc/duskbreakers-a-play-to-mint-p2m-nft-project-edc8f34245c4) for fairness
@@ -55,3 +55,4 @@ Future extensions/optimizations that would be nice:
 
 Other resources:
 * https://consensys.github.io/smart-contract-best-practices/
+* https://github.com/crytic/building-secure-contracts/tree/master/program-analysis/slither

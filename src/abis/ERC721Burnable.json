@@ -354,7 +354,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.0;\n\nimport \"../ERC721.sol\";\nimport \"../../../utils/Context.sol\";\n\n/**\n * @title ERC721 Burnable Token\n * @dev ERC721 Token that can be irreversibly burned (destroyed).\n */\nabstract contract ERC721Burnable is Context, ERC721 {\n    /**\n     * @dev Burns `tokenId`. See {ERC721-_burn}.\n     *\n     * Requirements:\n     *\n     * - The caller must own `tokenId` or be an approved operator.\n     */\n    function burn(uint256 tokenId) public virtual {\n        //solhint-disable-next-line max-line-length\n        require(_isApprovedOrOwner(_msgSender(), tokenId), \"ERC721Burnable: caller is not owner nor approved\");\n        _burn(tokenId);\n    }\n}\n",
-  "sourcePath": "@openzeppelin\\contracts\\token\\ERC721\\extensions\\ERC721Burnable.sol",
+  "sourcePath": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol",
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol",
     "exportedSymbols": {
@@ -1161,7 +1161,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-30T19:16:29.696Z",
+  "updatedAt": "2022-01-06T03:21:37.448Z",
   "devdoc": {
     "details": "ERC721 Token that can be irreversibly burned (destroyed).",
     "kind": "dev",
